@@ -5,7 +5,7 @@ import ProductAd from '@/components/products/ProductAd';
 import ProductSortingDropdown from '@/components/products/ProductSortingDropdown';
 import { getProducts } from '@/api/index';
 import { infiniteScroll, willShowAd, handleScroll } from '@/components/products/functions.js';
-import { FETCH_LIMIT } from '@/components/products/constants';
+import { FETCH_LIMIT, ERROR_MESSAGE } from '@/components/products/constants';
 
 const ProductsGrid = () => {
     /// State
@@ -19,6 +19,7 @@ const ProductsGrid = () => {
     });
     const [sort, setSort] = useState(null);
     const [isBottom, setIsBottom] = useState(false);
+    const [finalMessage, setFinalMessage] = useState('~ end of catalogue ~');
 
     /// Refs
     const mounted = useRef();
@@ -26,31 +27,45 @@ const ProductsGrid = () => {
     /// Main fetching function
     const fetch = async (sortOrMounted = false) => {
         const newPage = sortOrMounted ? 1 : page + 1;
+        const isFetchingBottom = newPage * limit > productsList.length;
+        /// Loading state
         setState({
             productsList: sortOrMounted ? [] : productsList,
             page: newPage,
             limit,
-            isFinal: sortOrMounted ? false : preFetchPage * limit > productsList.length,
+            isFinal: !sortOrMounted ? isFetchingBottom : false,
             loading: true,
             preFetchPage: newPage
         });
-        const data = await getProducts({ page: newPage, limit, sort });
-        setState((prevState) => ({
-            productsList: sortOrMounted ? [...data] : prevState.productsList.concat(data),
-            page: newPage,
-            limit,
-            isFinal: sortOrMounted ? false : preFetchPage * limit > productsList.length,
-            loading: false,
-            preFetchPage: newPage
-        }));
-        !mounted.current &&
-            window.addEventListener('scroll', () =>
-                infiniteScroll(() => handleScroll(setIsBottom))
-            );
-        mounted.current = true;
-        setIsBottom(
-            sortOrMounted ? false : preFetchPage * limit > productsList.length ? true : false
-        );
+        try {
+            /// Fetch
+            const data = await getProducts({ page: newPage, limit, sort });
+            setState((prevState) => ({
+                productsList: sortOrMounted ? [...data] : prevState.productsList.concat(data),
+                page: newPage,
+                limit,
+                isFinal: !sortOrMounted ? isFetchingBottom : false,
+                loading: false,
+                preFetchPage: newPage
+            }));
+            !mounted.current &&
+                window.addEventListener('scroll', () =>
+                    infiniteScroll(() => handleScroll(setIsBottom))
+                );
+            mounted.current = true;
+            setIsBottom(!sortOrMounted ? isFetchingBottom : false);
+        } catch ({ message }) {
+            setFinalMessage(message);
+            setState((prevState) => ({
+                productsList: prevState.productsList,
+                page,
+                limit,
+                isFinal: true,
+                loading: false,
+                preFetchPage
+            }));
+            setIsBottom(!sortOrMounted ? isFetchingBottom : false);
+        }
     };
     /// Effects
     useEffect(() => {
@@ -120,7 +135,12 @@ const ProductsGrid = () => {
 
             {loading && !isFinal && <Skeleton count={5} />}
             {isFinal && !loading && (
-                <h1 className="title is-one has-text-centered">~ end of catalogue ~</h1>
+                <>
+                    <h1 className="title is-one has-text-centered">{finalMessage}</h1>
+                    {finalMessage === ERROR_MESSAGE && (
+                        <p className="has-text-centered">Press F5 to reload</p>
+                    )}
+                </>
             )}
         </div>
     );

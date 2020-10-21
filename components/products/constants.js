@@ -18,3 +18,5 @@ export const MONTHS = [
     'November',
     'December'
 ];
+
+export const ERROR_MESSAGE = 'Failed to fetch';

@@ -27,6 +27,7 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 -   [x] Infinite scroll down
 -   [x] Animated loading message changed for a dynamic 'Skeleton' component.
 -   [x] End of catalogue message.
+-   [x] Network failure detection
 
 ## Author
 
