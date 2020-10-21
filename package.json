@@ -10,6 +10,7 @@
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
     },
     "dependencies": {
+        "@mdi/font": "^5.7.55",
         "bulma": "^0.9.1",
         "eslint": "^7.11.0",
         "eslint-config-prettier": "^6.13.0",

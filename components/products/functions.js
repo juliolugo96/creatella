@@ -82,12 +82,3 @@ export const timeSince = (date) => {
 
     return Math.floor(seconds) + ' seconds ago';
 };
-
-/// Utility function
-export const dropdownOpenEvent = () => {
-    var dropdown = document.querySelector('.dropdown');
-    dropdown.addEventListener('click', function (event) {
-        event.stopPropagation();
-        dropdown.classList.toggle('is-active');
-    });
-};

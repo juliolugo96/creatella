@@ -4,12 +4,7 @@ import ProductCard from '@/components/products/ProductCard';
 import ProductAd from '@/components/products/ProductAd';
 import ProductSortingDropdown from '@/components/products/ProductSortingDropdown';
 import { getProducts } from '@/api/index';
-import {
-    infiniteScroll,
-    dropdownOpenEvent,
-    willShowAd,
-    handleScroll
-} from '@/components/products/functions.js';
+import { infiniteScroll, willShowAd, handleScroll } from '@/components/products/functions.js';
 import { FETCH_LIMIT } from '@/components/products/constants';
 
 const ProductsGrid = () => {
@@ -66,12 +61,11 @@ const ProductsGrid = () => {
         isBottom && fetch(false);
     }, [isBottom]);
 
-    useEffect(dropdownOpenEvent, []);
     return (
         <div className="container">
-            <h1 className="title has-text-centered is-spaced text-focus-in is-capitalized is-size-1">
-                Products Grid
-            </h1>
+            <div className="has-text-centered is-spaced text-focus-in">
+                <img src="/product.png" alt="" />
+            </div>
 
             <h3 className="subtitle is-3 has-text-centered slide-in-fwd-center has-text-weight-light">
                 Here you&apos;re sure to find a bargain on some of the finest ascii available to
@@ -90,10 +84,27 @@ const ProductsGrid = () => {
                             {willShowAd(id) ? (
                                 <div className="column is-one-quarter">
                                     <div className="card scale-in-left">
-                                        <div className="card-image has-text-centered">
+                                        <div className="image-container card-image has-text-centered">
                                             <figure className="image">
                                                 <ProductAd />
                                             </figure>
+                                        </div>
+                                        <div className="card-content">
+                                            <div className="media has-text-centered">
+                                                <div className="media-content">
+                                                    <p className="title is-4">Ad</p>
+                                                    <p className="subtitle is-6 has-text-grey-light">
+                                                        Sponsored by: Creatella
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <h2 className="title is-2 has-text-centered">AD</h2>
+
+                                            <div className="content has-text-centered">
+                                                <hr />
+                                                <p className="is-italic">@ Creatella, 2020</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

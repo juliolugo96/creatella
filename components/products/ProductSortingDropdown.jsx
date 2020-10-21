@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const ProductSortingDropdown = ({ sort, callback }) => {
     return (
-        <div className="dropdown">
+        <div className="dropdown is-hoverable">
             <div className="dropdown-trigger">
                 <button
                     className="button is-light"
@@ -13,6 +13,7 @@ const ProductSortingDropdown = ({ sort, callback }) => {
                     <span className="has-text-weight-bold">
                         {sort || ' Choose a sorting criteria'}
                     </span>
+                    <i className="mdi mdi-chevron-down"></i>
                 </button>
             </div>
             <div className="dropdown-menu" id="dropdown-menu" role="menu">
