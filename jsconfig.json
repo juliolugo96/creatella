@@ -1,0 +1,13 @@
+// tsconfig.json or jsconfig.json
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/components/*": ["components/*"],
+            "@/api/*": ["api/*"],
+            "@/assets/*": ["assets/*"],
+            "@/commons.js": ["commons.js"]
+        }
+    },
+    "exclude": ["node_modules"]
+}
