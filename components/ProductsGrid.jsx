@@ -4,86 +4,76 @@ import ProductCard from '@/components/products/ProductCard';
 import ProductAd from '@/components/products/ProductAd';
 import ProductSortingDropdown from '@/components/products/ProductSortingDropdown';
 import { getProducts } from '@/api/index';
-import { infiniteScroll, dropdownOpenEvent } from '@/components/products/functions.js';
+import {
+    infiniteScroll,
+    dropdownOpenEvent,
+    willShowAd,
+    handleScroll
+} from '@/components/products/functions.js';
+import { FETCH_LIMIT } from '@/components/products/constants';
 
 const ProductsGrid = () => {
     /// State
-    const [{ productsList, loading, page, limit, isFinal }, setState] = useState({
+    const [{ productsList, loading, page, limit, isFinal, preFetchPage }, setState] = useState({
         productsList: [],
-        loading: false,
+        loading: true,
         page: 1,
-        limit: 10,
+        preFetchPage: 1,
+        limit: FETCH_LIMIT,
         isFinal: false
     });
     const [sort, setSort] = useState(null);
     const [isBottom, setIsBottom] = useState(false);
 
-    /// Handle scroll
-
-    const handleScroll = () => {
-        const scrollTop =
-            (document.documentElement && document.documentElement.scrollTop) ||
-            document.body.scrollTop;
-        const scrollHeight =
-            (document.documentElement && document.documentElement.scrollHeight) ||
-            document.body.scrollHeight;
-        if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
-            setIsBottom(true);
-        }
-    };
-
     /// Refs
     const mounted = useRef();
 
+    /// Main fetching function
+    const fetch = async (sortOrMounted = false) => {
+        const newPage = sortOrMounted ? 1 : page + 1;
+        setState({
+            productsList: sortOrMounted ? [] : productsList,
+            page: newPage,
+            limit,
+            isFinal: sortOrMounted ? false : preFetchPage * limit > productsList.length,
+            loading: true,
+            preFetchPage: newPage
+        });
+        const data = await getProducts({ page: newPage, limit, sort });
+        setState((prevState) => ({
+            productsList: sortOrMounted ? [...data] : prevState.productsList.concat(data),
+            page: newPage,
+            limit,
+            isFinal: sortOrMounted ? false : preFetchPage * limit > productsList.length,
+            loading: false,
+            preFetchPage: newPage
+        }));
+        !mounted.current &&
+            window.addEventListener('scroll', () =>
+                infiniteScroll(() => handleScroll(setIsBottom))
+            );
+        mounted.current = true;
+        setIsBottom(
+            sortOrMounted ? false : preFetchPage * limit > productsList.length ? true : false
+        );
+    };
     /// Effects
     useEffect(() => {
-        const fetchProducts = async () => {
-            setState({ productsList, page, limit, isFinal, loading: true });
-            getProducts({ page: 1, limit, sort }).then((data) => {
-                setState({
-                    loading: false,
-                    productsList: [...data],
-                    page: 1,
-                    limit,
-                    isFinal
-                });
-                !mounted.current &&
-                    window.addEventListener('scroll', () => infiniteScroll(handleScroll));
-                mounted.current = true;
-            });
-        };
-        fetchProducts();
-        return () => window.removeEventListener('scroll', () => infiniteScroll(handleScroll));
+        fetch(true);
     }, [sort]);
 
     useEffect(() => {
-        const appendProducts = async () => {
-            if (productsList.length !== 0) {
-                setState({ productsList, page, limit, isFinal, loading: true });
-                getProducts({ page: page + 1, limit, sort }).then((data) => {
-                    setState((prevState) => ({
-                        loading: false,
-                        productsList: prevState.productsList.concat(data),
-                        page: page + 1,
-                        limit,
-                        isFinal: data.length < limit
-                    }));
-                    setIsBottom(data.length < limit ? true : false);
-                });
-            }
-        };
-        isBottom && appendProducts();
+        isBottom && fetch(false);
     }, [isBottom]);
 
     useEffect(dropdownOpenEvent, []);
-
     return (
         <div className="container">
-            <h1 className="title is-1 has-text-centered is-spaced slide-in-fwd-center">
+            <h1 className="title has-text-centered is-spaced text-focus-in is-capitalized is-size-1">
                 Products Grid
             </h1>
 
-            <h3 className="subtitle is-3 has-text-centered slide-in-fwd-center">
+            <h3 className="subtitle is-3 has-text-centered slide-in-fwd-center has-text-weight-light">
                 Here you&apos;re sure to find a bargain on some of the finest ascii available to
                 purchase. Be sure to peruse our selection of ascii faces in an exciting range of
                 sizes and prices.
@@ -94,10 +84,10 @@ const ProductsGrid = () => {
             </div>
 
             <div className="columns is-multiline is-vcentered mt-6">
-                {productsList?.slice(0, page * limit).map((product, id) => {
+                {productsList?.slice(0, limit * preFetchPage).map((product, id) => {
                     return (
                         <Fragment key={id}>
-                            {id % 20 === 0 ? (
+                            {willShowAd(id) ? (
                                 <div className="column is-one-quarter">
                                     <div className="card scale-in-left">
                                         <div className="card-image has-text-centered">

@@ -23,10 +23,7 @@ const ProductSortingDropdown = ({ sort, callback }) => {
                             className={`button ${
                                 sort === name ? 'is-link' : 'is-text'
                             } dropdown-item`}
-                            onMouseDown={() => {
-                                console.log('HI.');
-                                return callback(name);
-                            }}>
+                            onMouseDown={() => callback(name)}>
                             <span className="has-text-weight-bold">{name} </span>
                         </button>
                     ))}

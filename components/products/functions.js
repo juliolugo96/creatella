@@ -1,4 +1,18 @@
-import { MONTHS } from '@/components/products/constants';
+import { MONTHS, AD_FREQUENCY } from '@/components/products/constants';
+
+export const willShowAd = (id) => id % AD_FREQUENCY === 0;
+
+// Handle scroll
+export const handleScroll = (callback) => {
+    const scrollTop =
+        (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const scrollHeight =
+        (document.documentElement && document.documentElement.scrollHeight) ||
+        document.body.scrollHeight;
+    if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
+        callback(true);
+    }
+};
 
 export const dropdownOpenEvent = () => {
     var dropdown = document.querySelector('.dropdown');

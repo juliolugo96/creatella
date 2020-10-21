@@ -11,10 +11,7 @@ export const getProducts = ({ page, limit, sort = null }) => {
 
         fetch(url)
             .then((response) => response.json())
-            .then((data) => {
-                console.log('Data: ', data);
-                resolve(data);
-            })
+            .then((data) => resolve(data))
             .catch((error) => reject(error));
     });
 };
