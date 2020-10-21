@@ -16,9 +16,9 @@ const ProductAd = () => {
                 style={{ display: loading ? 'block' : 'none', paddingTop: 50 }}>
                 <h3 className="title has-text-centered is-3">Loading AD, please wait...</h3>
             </div>
-            <div className="image-ad-container" style={{ display: loading ? 'none' : 'block' }}>
+            <div className="image-container" style={{ display: loading ? 'none' : 'block' }}>
                 <img
-                    className="image-face"
+                    className="image-ad"
                     onLoad={imageLoaded}
                     style={{ display: !loading ? 'block' : 'none' }}
                     src={url}

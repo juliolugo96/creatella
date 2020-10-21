@@ -64,7 +64,7 @@ const ProductsGrid = () => {
     return (
         <div className="container">
             <div className="has-text-centered is-spaced text-focus-in">
-                <img src="/product.png" alt="" />
+                <img src="/product.png" style={{ width: '20rem' }} alt="" />
             </div>
 
             <h3 className="subtitle is-3 has-text-centered slide-in-fwd-center has-text-weight-light">
@@ -82,7 +82,7 @@ const ProductsGrid = () => {
                     return (
                         <Fragment key={id}>
                             {willShowAd(id) ? (
-                                <div className="column is-one-quarter">
+                                <div className="column is-one-third">
                                     <div className="card scale-in-left">
                                         <div className="image-container card-image has-text-centered">
                                             <figure className="image">
@@ -110,7 +110,7 @@ const ProductsGrid = () => {
                                 </div>
                             ) : null}
 
-                            <div className="column is-one-quarter" key={product.id}>
+                            <div className="column is-one-third" key={product.id}>
                                 <ProductCard {...product} />
                             </div>
                         </Fragment>
