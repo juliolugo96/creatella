@@ -1,8 +1,25 @@
 import { MONTHS, AD_FREQUENCY } from '@/components/products/constants';
 
+/**
+    Ads related functions
+ */
+
 export const willShowAd = (id) => id % AD_FREQUENCY === 0;
 
-// Handle scroll
+export const generateRandomImageUrl = () => {
+    let random = Math.floor(Math.random() * 1000);
+    let lastAdSeen = sessionStorage.getItem('lastRandom');
+    while (random == lastAdSeen) {
+        random = Math.floor(Math.random() * 1000);
+    }
+
+    sessionStorage.setItem('lastRandom', random);
+    return `${process.env.NEXT_PUBLIC_API_URL}/ads?r=${random}`;
+};
+
+/**
+    Scrolling functions
+ */
 export const handleScroll = (callback) => {
     const scrollTop =
         (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -12,14 +29,6 @@ export const handleScroll = (callback) => {
     if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
         callback(true);
     }
-};
-
-export const dropdownOpenEvent = () => {
-    var dropdown = document.querySelector('.dropdown');
-    dropdown.addEventListener('click', function (event) {
-        event.stopPropagation();
-        dropdown.classList.toggle('is-active');
-    });
 };
 
 // Throttle function: Input as function which needs to be throttled and delay is the time interval in milliseconds
@@ -45,6 +54,9 @@ export const infiniteScroll = (callback) => {
     }, 400);
 };
 
+/**
+    Date formatting functions
+*/
 const formatDate = (date) => {
     return `${MONTHS[date.getMonth()]}/${date.getDate()}/${date.getFullYear()}`;
 };
@@ -69,4 +81,13 @@ export const timeSince = (date) => {
     if (interval > 1) return Math.floor(interval) + ' minutes ago';
 
     return Math.floor(seconds) + ' seconds ago';
+};
+
+/// Utility function
+export const dropdownOpenEvent = () => {
+    var dropdown = document.querySelector('.dropdown');
+    dropdown.addEventListener('click', function (event) {
+        event.stopPropagation();
+        dropdown.classList.toggle('is-active');
+    });
 };

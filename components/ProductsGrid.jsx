@@ -109,7 +109,7 @@ const ProductsGrid = () => {
 
             {loading && !isFinal && <Skeleton count={5} />}
             {isFinal && !loading && (
-                <h1 className="title is-one has-text-centered">End of the catalogue!</h1>
+                <h1 className="title is-one has-text-centered">~ end of catalogue ~</h1>
             )}
         </div>
     );

@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Creatella Test
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) used as preliminary test to apply for the role of Front End Developer in Creatella.
 
 ## Getting Started
 
@@ -14,17 +16,18 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+-   [x] Server Side Rendering (SSR) using NextJS
+-   [x] Bulma framework integration with a responsive layout
+-   [x] Elegant animations
+-   [x] Defined sorting criteria
+-   [x] Products Pre-fetch
+-   [x] Date formatting for each product following pointed convention
+-   [x] Infinite scroll down
+-   [x] Animated loading message changed for a dynamic 'Skeleton' component.
+-   [x] End of catalogue message.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Julio Lugo - [@juliolugo96](https://www.github.com/juliolugo96)

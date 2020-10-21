@@ -1,15 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const generateRandomImageUrl = () => {
-    let random = Math.floor(Math.random() * 1000);
-    let lastAdSeen = sessionStorage.getItem('lastRandom');
-    while (random == lastAdSeen) {
-        random = Math.floor(Math.random() * 1000);
-    }
-
-    sessionStorage.setItem('lastRandom', random);
-    return `${process.env.NEXT_PUBLIC_API_URL}/ads?r=${random}`;
-};
+import { generateRandomImageUrl } from '@/components/products/functions';
 
 const ProductAd = () => {
     const [loading, setLoading] = useState(true);
