@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, Fragment } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import ProductCard from '@/components/products/ProductCard';
-import ProductAd from '@/components/products/ProductAd';
+import AdCard from '@/components/products/AdCard';
 import ProductSortingDropdown from '@/components/products/ProductSortingDropdown';
 import { getProducts } from '@/api/index';
 import { infiniteScroll, willShowAd, handleScroll } from '@/components/products/functions.js';
@@ -44,7 +44,7 @@ const ProductsGrid = () => {
                 productsList: sortOrMounted ? [...data] : prevState.productsList.concat(data),
                 page: newPage,
                 limit,
-                isFinal: !sortOrMounted ? isFetchingBottom : false,
+                isFinal: !sortOrMounted ? isFetchingBottom : data.length < limit,
                 loading: false,
                 preFetchPage: newPage
             }));
@@ -53,7 +53,7 @@ const ProductsGrid = () => {
                     infiniteScroll(() => handleScroll(setIsBottom))
                 );
             mounted.current = true;
-            setIsBottom(!sortOrMounted ? isFetchingBottom : false);
+            setIsBottom(!sortOrMounted ? isFetchingBottom : data.length < limit);
         } catch ({ message }) {
             setFinalMessage(message);
             setState((prevState) => ({
@@ -98,30 +98,7 @@ const ProductsGrid = () => {
                         <Fragment key={id}>
                             {willShowAd(id) ? (
                                 <div className="column is-one-third">
-                                    <div className="card scale-in-left">
-                                        <div className="image-container card-image has-text-centered">
-                                            <figure className="image">
-                                                <ProductAd />
-                                            </figure>
-                                        </div>
-                                        <div className="card-content">
-                                            <div className="media has-text-centered">
-                                                <div className="media-content">
-                                                    <p className="title is-4">Ad</p>
-                                                    <p className="subtitle is-6 has-text-grey-light">
-                                                        Sponsored by: Creatella
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <h2 className="title is-2 has-text-centered">AD</h2>
-
-                                            <div className="content has-text-centered">
-                                                <hr />
-                                                <p className="is-italic">@ Creatella, 2020</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <AdCard />
                                 </div>
                             ) : null}
 
@@ -136,7 +113,7 @@ const ProductsGrid = () => {
             {loading && !isFinal && <Skeleton count={5} />}
             {isFinal && !loading && (
                 <>
-                    <h1 className="title is-one has-text-centered">{finalMessage}</h1>
+                    <h1 className="title is-1 has-text-centered">{finalMessage}</h1>
                     {finalMessage === ERROR_MESSAGE && (
                         <p className="has-text-centered">Press F5 to reload</p>
                     )}
