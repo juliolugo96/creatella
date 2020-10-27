@@ -1,7 +1,7 @@
 export const getProducts = ({ page, limit, sort = null }) => {
     return new Promise((resolve, reject) => {
         const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-        const url = `${baseUrl}/api/products?_page=${page}&_limit=${limit * 2}${
+        const url = `${baseUrl}/products?_page=${page}&_limit=${limit * 2}${
             sort === null ? '' : `&_sort=${sort}`
         }`;
 

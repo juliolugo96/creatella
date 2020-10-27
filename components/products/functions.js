@@ -21,14 +21,16 @@ export const generateRandomImageUrl = () => {
     Scrolling functions
  */
 export const handleScroll = (callback) => {
-    const scrollTop =
+    /*const scrollTop =
         (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const scrollHeight =
         (document.documentElement && document.documentElement.scrollHeight) ||
         document.body.scrollHeight;
     if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
-        callback(true);
-    }
+        
+    }*/
+
+    callback(true);
 };
 
 // Throttle function: Input as function which needs to be throttled and delay is the time interval in milliseconds
@@ -45,12 +47,11 @@ var throttleFunction = function (func, delay) {
 
 export const infiniteScroll = (callback) => {
     throttleFunction(() => {
-        if (
+        /*if (
             window.innerHeight + document.documentElement.scrollTop ===
             document.documentElement.offsetHeight
-        ) {
-            callback();
-        }
+        )*/
+        callback();
     }, 400);
 };
 
